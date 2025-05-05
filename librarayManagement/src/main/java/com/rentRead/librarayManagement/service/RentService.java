@@ -76,5 +76,34 @@ public class RentService {
 		}
 
 	}
+	
+	public ResponseEntity<RentalDto> returnBook(Long bookId) {
+	    Book book = bookRepositiory.findById(bookId)
+	            .orElseThrow(() -> new ResourceNotFoundException("Book not found with ID: " + bookId));
+
+	    String token = request.getHeader("Authorization").substring(7);
+	    String userEmail = jwtService.extractUserName(token);
+
+	    User user = userRepositiory.findByEmail(userEmail);
+	    if (user == null) {
+	        throw new ResourceNotFoundException("User not found for email: " + userEmail);
+	    }
+
+	    Rental rental = rentalRepositiory.findFirstByUserAndBookAndReturned(user, book, false)
+	            .orElseThrow(() -> new IllegalArgumentException("No active rental found for this book and user"));
+
+	    // Mark the book as returned
+	    rental.setReturned(true);
+	    rentalRepositiory.save(rental);
+
+	    // Update book availability
+	    book.setAvailable_quantity(book.getAvailable_quantity() + 1);
+	    book.setAvailable_status(true);
+	    bookRepositiory.save(book);
+
+	    RentalDto rentalDto = modelMapper.map(rental, RentalDto.class);
+	    return ResponseEntity.ok(rentalDto);
+	}
+
 
 }

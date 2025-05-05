@@ -22,5 +22,9 @@ public class RentController {
 		return rentService.rentBook(bookId);
 		
 	}
+	@PostMapping("/{bookId}/return")
+	public ResponseEntity<RentalDto> returnBook(@PathVariable Long bookId){
+		return rentService.returnBook(bookId);
+	}
 
 }

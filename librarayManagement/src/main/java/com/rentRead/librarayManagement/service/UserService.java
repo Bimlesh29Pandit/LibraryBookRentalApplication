@@ -1,5 +1,8 @@
 package com.rentRead.librarayManagement.service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -9,12 +12,14 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
 import org.springframework.stereotype.Service;
 
 import com.rentRead.librarayManagement.Exception.ResourceNotFoundException;
-import com.rentRead.librarayManagement.dto.UserDto;
+
 import com.rentRead.librarayManagement.dto.UserLoginDto;
+import com.rentRead.librarayManagement.dto.UserRegistrationRequest;
+import com.rentRead.librarayManagement.dto.UserResponse;
 import com.rentRead.librarayManagement.model.User;
 import com.rentRead.librarayManagement.repo.UserRepositiory;
 @Service
@@ -27,32 +32,39 @@ public class UserService {
 	ModelMapper modelMapper;
 	@Autowired
 	private AuthenticationManager authenticationManager;
-//	@Autowired
-//	private authenticationManager
+
 	@Autowired
 	private JwtService jwtService;
 	BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12);
 	
-	public ResponseEntity<UserDto> registerUser(User user) {
-		// TODO Auto-generated method stub
+	public ResponseEntity<UserResponse> registerUser(UserRegistrationRequest userRequest) {
+	    // Normalize email
+	    String email = userRequest.getEmail().toLowerCase();
 
-		user.setEmail(user.getEmail().toLowerCase());
+	    // Check if email already exists
+	    if (userRepositiroy.existsByEmail(email)) {
+	        throw new IllegalArgumentException("Email already exists in the system. Try with another email or login instead.");
+	    }
 
-		if(userRepositiroy.existsByEmail(user.getEmail())){
-			throw new IllegalArgumentException("Email already exists in the System try with another email or login with the same");
-		}
-		user.setPassword(encoder.encode(user.getPassword()));
-		User user1 = userRepositiroy.save(user);
+	    // Create User entity and map fields manually or with ModelMapper
+	    User user = new User();
+	    user.setEmail(email);
+	    user.setPassword(encoder.encode(userRequest.getPassword()));
+	    user.setFirstName(userRequest.getFirstName());
+	    user.setLastName(userRequest.getLastName());
+	    user.setRole(userRequest.getRole()); // Or whatever default role you assign
 
+	    // Save user
+	    User savedUser = userRepositiroy.save(user);
 
-		UserDto userDto = modelMapper.map(user1, UserDto.class);
+	    // Convert entity to DTO
+	    UserResponse userResponse = modelMapper.map(savedUser, UserResponse.class);
 
-		return new ResponseEntity<UserDto>(userDto, HttpStatus.CREATED);
-
-
+	    return new ResponseEntity<>(userResponse, HttpStatus.CREATED);
 	}
+
 	public ResponseEntity<String> loginUser(UserLoginDto userLogin) throws AuthenticationException {
-		// TODO Auto-generated method stub
+
 		User user = userRepositiroy.findByEmail(userLogin.getEmail().toLowerCase());
 		if(user == null) {
 			throw new ResourceNotFoundException("Email is not register with use please first register and login again");
@@ -67,8 +79,20 @@ public class UserService {
 			return new ResponseEntity<String>("Invalid Password try again !!!!", HttpStatus.BAD_REQUEST);
 		}
 
-//		return new ResponseEntity<String>("login Successfull", HttpStatus.ACCEPTED);
 
+	}
+
+	public ResponseEntity<List<UserResponse>> getAllUser() {
+		
+		List<User> users = userRepositiroy.findAll();
+		List<UserResponse> userResponses = users.stream().map(user->modelMapper.map(user, UserResponse.class)).collect(Collectors.toList());
+		return new ResponseEntity<List<UserResponse>>(userResponses,HttpStatus.OK);
+	}
+
+	public ResponseEntity<UserResponse> getUserById(Long userId) {
+		User user = userRepositiroy.findById(userId).orElseThrow(()->new ResourceNotFoundException("UserId not found") );
+		UserResponse userResponse = modelMapper.map(user, UserResponse.class);
+		return new ResponseEntity<UserResponse>(userResponse,HttpStatus.OK);
 	}
 
 }

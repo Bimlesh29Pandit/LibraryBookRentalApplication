@@ -1,10 +1,9 @@
 package com.rentRead.librarayManagement.service;
 
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;import java.util.stream.Collector;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
@@ -14,7 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.rentRead.librarayManagement.Exception.ResourceNotFoundException;
-import com.rentRead.librarayManagement.dto.BookDto;
+
 import com.rentRead.librarayManagement.dto.RentalDto;
 import com.rentRead.librarayManagement.model.Book;
 import com.rentRead.librarayManagement.model.Rental;

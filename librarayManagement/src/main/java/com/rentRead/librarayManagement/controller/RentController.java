@@ -40,6 +40,6 @@ public class RentController {
 	        return rentService.activeRentHistory(active); // true or false
 	    }
 	}
-
+ 
 
 }

@@ -22,7 +22,7 @@ public class MyUserPrinciple implements UserDetails {
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		// TODO Auto-generated method stub
-		System.out.println(user.getRole().name() +"2");
+//		System.out.println(user.getRole().name() +"2");
 		return List.of(new SimpleGrantedAuthority("ROLE_"+ user.getRole().name()));
 
 	}

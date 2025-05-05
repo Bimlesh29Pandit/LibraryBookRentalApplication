@@ -12,7 +12,6 @@ import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
 
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import com.rentRead.librarayManagement.enumAll.Role;
@@ -46,7 +45,7 @@ public class JwtService {
 	public String generateToken(String username,Role role) { 
 		// TODO Auto-generated method stub
 		
-		Map<String, Object> claims = new HashMap();
+		Map<String, Object> claims = new HashMap<>();
 		claims.put("Role","ROLE_"+ role.name());
 		
 		

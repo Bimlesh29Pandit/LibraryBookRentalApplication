@@ -1,6 +1,5 @@
 package com.rentRead.librarayManagement.config;
 
-import java.net.http.HttpRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -13,7 +12,6 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -38,7 +36,7 @@ public class SecurityConfig {
 		http.csrf(customizer->customizer.disable())
 		.authorizeHttpRequests(request->request
 				.requestMatchers("/auth/*").permitAll()
-				.requestMatchers(HttpMethod.POST, "/books/**").hasRole("ADMIN")
+				.requestMatchers(HttpMethod.GET,"/users/**").hasRole("ADMIN")				.requestMatchers(HttpMethod.POST, "/books/**").hasRole("ADMIN")
 	            .requestMatchers(HttpMethod.PUT, "/books/**").hasRole("ADMIN")
 	            .requestMatchers(HttpMethod.DELETE, "/books/**").hasRole("ADMIN")
 	            .requestMatchers(HttpMethod.GET, "/books/*").hasAnyRole("ADMIN", "USER")

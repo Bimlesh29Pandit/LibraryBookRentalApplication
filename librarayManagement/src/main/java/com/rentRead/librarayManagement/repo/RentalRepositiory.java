@@ -14,4 +14,5 @@ public interface RentalRepositiory extends JpaRepository<Rental	, Long> {
 	
 	public List<Rental> findByUserAndReturned(User user, boolean returned);
 	public Optional<Rental> findFirstByUserAndBookAndReturned(User user, Book book,boolean returned);
+	public List<Rental> findByUser(User user);
 }

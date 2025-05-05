@@ -35,6 +35,9 @@ public class BookController {
 		return bookService.getBookById(bookId);
 		
 	}
+	
+	
+	//Only ADMIN can access
 	@PostMapping
 	public ResponseEntity<BookDto> addBook(@RequestBody Book book){
 		return bookService.addBook(book);
@@ -48,5 +51,6 @@ public class BookController {
 	public ResponseEntity<String> deleteBook(@PathVariable Long bookId){
 		return bookService.deleteBook(bookId);
 	}
+	
 
 }

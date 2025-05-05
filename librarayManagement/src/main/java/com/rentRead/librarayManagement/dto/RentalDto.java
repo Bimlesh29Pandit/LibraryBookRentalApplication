@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 public class RentalDto {
 	
 	private Long id;
-	private UserDto user;
+//	private UserDto user;
 	private BookDto book;
 	private LocalDateTime rentedAt = LocalDateTime.now();
 	private boolean returned = false;

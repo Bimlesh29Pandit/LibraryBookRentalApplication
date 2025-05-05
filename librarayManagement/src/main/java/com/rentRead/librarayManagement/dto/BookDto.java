@@ -18,7 +18,8 @@ public class BookDto {
 	private String title;
 	private String author;
 	private String genre;
-	private int available_quantity;
+//	private int available_quantity;
+	private boolean avilable_status;
 
 //	public Long getId() {
 //		return id;

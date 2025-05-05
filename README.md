@@ -23,22 +23,26 @@ This is a Spring Boot-based RESTful web application for managing an online book 
 ## ✅ Features
 
 ### Authentication & Authorization
+
 - JWT-based authentication.
 - Role-based access control using Spring Security.
 - Two roles supported: `ADMIN`, `USER`.
 
 ### Users
+
 - Register and login.
 - Fetch profile details.
 - Role: `USER` (by default), `ADMIN` (for admin operations).
 
 ### Books (Accessible by ADMIN and USER)
+
 - `GET /books` — View all available books (USER/ADMIN).
 - `POST /books` — Add a new book (ADMIN only).
 - `PUT /books/{id}` — Update book details (ADMIN only).
 - `DELETE /books/{id}` — Delete a book (ADMIN only).
 
 ### Rentals
+
 - `POST /rent/{bookId}` — Rent a book (USER only).
   - ❗ Users **cannot rent more than 2 books** at the same time.
   - Only books that are not returned yet count towards the limit.
@@ -59,20 +63,21 @@ This is a Spring Boot-based RESTful web application for managing an online book 
 ├── model/                  --> JPA Entity models (User, Book, Rental)
 ├── repository/             --> JPA repositories
 ├── service/                --> Business logic for auth, jwtService, books, and rentals.
-├── application.properties  --> DB properties 
+├── application.properties  --> DB properties
+```
 ````
 
 ---
 
 ## 🛡️ Security Configuration
 
-* Custom JWT token generation and validation.
-* Filter chain configured with:
+- Custom JWT token generation and validation.
+- Filter chain configured with:
 
-  * `/auth/*` → Open to all (register/login).
-  * `/books` (GET) → USER & ADMIN.
-  * `/books` (POST/PUT/DELETE) → ADMIN only.
-  * `/rent/*` → USER only.
+  - `/auth/*` → Open to all (register/login).
+  - `/books` (GET) → USER & ADMIN.
+  - `/books` (POST/PUT/DELETE) → ADMIN only.
+  - `/rent/*` → USER only.
 
 Example endpoint permission:
 
@@ -99,10 +104,9 @@ Example endpoint permission:
 
 | Field     | Type    | Description            |
 | --------- | ------- | ---------------------- |
-| id        | Long    | Primary Key            |
+| id        | Long    | Primary Key(auto )     |
 | title     | String  | Book title             |
 | author    | String  | Book author            |
-| isbn      | String  | ISBN number            |
 | available | Boolean | Book available to rent |
 
 ### Rental
@@ -139,9 +143,9 @@ Authorization: Bearer <your-token-here>
 
 ## 🚫 Business Logic Constraints
 
-* A user can **hold a maximum of 2 books** at a time.
-* User must **return a book** before renting a third.
-* Rental logic checks `returned == false` to determine active rentals.
+- A user can **hold a maximum of 2 books** at a time.
+- User must **return a book** before renting a third.
+- Rental logic checks `returned == false` to determine active rentals.
 
 ---
 
@@ -150,7 +154,7 @@ Authorization: Bearer <your-token-here>
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/your-username/book-rental-system.git
+git clone https://github.com/Bimlesh29Pandit/LibraryBookRentalApplication.git
 cd book-rental-system
 ```
 
@@ -201,9 +205,9 @@ spring.jpa.hibernate.ddl-auto=update
 
 Contributions are welcome! You can:
 
-* Create issues
-* Suggest improvements
-* Submit PRs
+- Create issues
+- Suggest improvements
+- Submit PRs
 
 ---
 
@@ -217,8 +221,8 @@ This project is open-source under the [MIT License](LICENSE).
 
 **Bimlesh Kumar**
 
-* Full Stack Developer | Accenture
-* [LinkedIn](https://www.linkedin.com/in/bimlesh-kumar/)
+- Full Stack Developer | Accenture
+- [LinkedIn](https://www.linkedin.com/in/bimlesh-kumar/)
 
 ```
 

@@ -19,6 +19,7 @@ import lombok.ToString;
 @Entity
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 
 public class Book {
 	@Id
